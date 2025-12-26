@@ -1,14 +1,14 @@
-<h1 align="center">Custom GDM Theme for Fedora & GNOME-Based Systems</h1>
+<h1 align="center">Huawei HG8145V5 Unlock & Wi-Fi Fix Guide</h1>
 
 <p align="center">
-A sleek, modern, and professional <strong>GDM (GNOME Display Manager)</strong> theme built to enhance the Fedora login and lock screen experience.<br/>
-Designed for maintainability, accessibility, and visual harmony.
+A professional, step-by-step guide to unlock your Huawei HG8145V5 router, remove Chinese/ISP restrictions, switch the interface to English, and disable Wi-Fi MAC filtering.<br/>
+Designed for clarity, safety, and beginner-friendly usage.
 </p>
 
 <p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
-  <a href="#"><img src="https://img.shields.io/badge/GNOME-45--47-green.svg" alt="GNOME Versions"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Supported%20Distros-Fedora%20%7C%20RHEL%20%7C%20openSUSE-orange.svg" alt="Supported Distros"></a>
+  <a href="#"><img src="https://img.shields.io/badge/license-Personal%20Use-blue.svg" alt="License"></a>
+  <a href="#"><img src="https://img.shields.io/badge/Device-Huawei%20HG8145V5-green.svg" alt="Device"></a>
+  <a href="#"><img src="https://img.shields.io/badge/Platform-Windows-orange.svg" alt="Platform"></a>
 </p>
 
 <hr/>
@@ -16,10 +16,10 @@ Designed for maintainability, accessibility, and visual harmony.
 <h2>Project Overview</h2>
 
 <ul>
-  <li>Custom <strong>Dark</strong> and <strong>Light</strong> GDM themes</li>
-  <li>Complete <code>SCSS</code> source files for customization</li>
-  <li>Precompiled <code>.gresource</code> file for quick installation</li>
-  <li>Automated build and installation scripts</li>
+  <li>Step-by-step guide to unlock Huawei HG8145V5 routers</li>
+  <li>Switch router interface to Global (English)</li>
+  <li>Disable Wi-Fi MAC filtering to allow all devices</li>
+  <li>Includes safety backup instructions</li>
 </ul>
 
 <hr/>
@@ -27,162 +27,98 @@ Designed for maintainability, accessibility, and visual harmony.
 <h2>Prerequisites</h2>
 
 <ul>
-  <li>GNOME Shell 45 or higher</li>
-  <li><code>glib2</code> and <code>sassc</code> installed</li>
-  <li>Administrative privileges (sudo access)</li>
+  <li>Laptop or PC running Windows</li>
+  <li><strong>Windows Terminal</strong> installed (<a href="https://apps.microsoft.com/detail/9n0dx20hk701?ocid=webpdpshare" target="_blank">Download Link</a>)</li>
+  <li>LAN cable (Wi-Fi connection also works)</li>
 </ul>
 
 <hr/>
 
-<h2>Installation</h2>
+<h2>Installation & Steps</h2>
 
-<pre><code>git clone https://github.com/&lt;your-username&gt;/gdm-theme.git
-cd gdm-theme
-chmod +x install.sh
-sudo ./install.sh
+<h3>Step 1: Connect to Router</h3>
+<pre><code>
+1. Connect LAN cable from router to laptop (optional: Wi-Fi)
+2. Open Windows Terminal
+3. Telnet to router: 192.168.100.1
+4. Connection Type: Telnet
+5. Click Open
 </code></pre>
 
-<p>
-The installer automatically backs up your existing GDM theme before applying the new one.
-</p>
+<h3>Step 2: Login</h3>
+<p>Note: Password input will not be visible.</p>
+<pre><code>
+Login: root
+Password: adminHW
 
-<h3>Restart GDM</h3>
-<pre><code>sudo systemctl restart gdm
+Commands:
+su
+shell
+
+Expected Output:
+WAP(Dopra Linux) #
 </code></pre>
 
-<hr/>
-
-<h2>Features</h2>
-
-<table>
-  <tr>
-    <th>Feature</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>Dark & Light Variants</td>
-    <td>Optimized for both dark and light environments with accessible contrast ratios.</td>
-  </tr>
-  <tr>
-    <td>Simple Installation</td>
-    <td>Fully automated installer — no manual file copying required.</td>
-  </tr>
-  <tr>
-    <td>Backup & Restore</td>
-    <td>Automatically creates and stores a backup of your original theme for easy rollback.</td>
-  </tr>
-  <tr>
-    <td>Cross-Distro Support</td>
-    <td>Compatible with Fedora, RHEL, openSUSE, and other GNOME-based RPM systems.</td>
-  </tr>
-  <tr>
-    <td>Modern GNOME Compatibility</td>
-    <td>Tested on GNOME Shell versions 45, 46, and 47.</td>
-  </tr>
-</table>
-
-<hr/>
-
-<h2>Reverting to Default Theme</h2>
-
-<pre><code>sudo cp /usr/share/gnome-shell/gnome-shell-theme.gresource.backup \
-         /usr/share/gnome-shell/gnome-shell-theme.gresource
-sudo systemctl restart gdm
+<h3>Step 3: Backup Configuration</h3>
+<pre><code>
+cd /mnt/jffs2
+cp hw_boardinfo hw_boardinfo.bak
+cp hw_ctree.xml hw_ctree.xml.bak
 </code></pre>
 
-<p>
-Backup files are automatically created as <code>gnome-shell-theme.gresource.backup</code> in <code>/usr/share/gnome-shell/</code>.
-</p>
+<h3>Step 4: Switch Router to Global (English)</h3>
+<pre><code>
+sed -i 's/"CHINATELECOM"/"COMMON"/g' hw_boardinfo
+sed -i 's/"CHINA"/"COMMON"/g' hw_boardinfo
+rm -rf hw_default_ctree.xml
+cp -rf /etc/wap/hw_default_ctree.xml /mnt/jffs2/hw_default_ctree.xml
+rm -rf hw_ctree.xml
+</code></pre>
 
-<hr/>
+<h3>Step 5: Restart Router</h3>
+<pre><code>
+reboot
+</code></pre>
+<p>Wait ~2 minutes for router to restart.</p>
 
-<h2>How It Works</h2>
-
-<ol>
-  <li><strong>Source Files:</strong> SCSS files in <code>gnome-shell-sass/</code> define the visual styling.</li>
-  <li><strong>Build Process:</strong> <code>make_gresource.sh</code> compiles SCSS into a single <code>.gresource</code> file.</li>
-  <li><strong>Theme Application:</strong> The compiled file replaces GNOME’s default <code>gnome-shell-theme.gresource</code>.</li>
-</ol>
-
-<hr/>
-
-<h2>File Structure</h2>
-
-<pre><code>gdm-theme/
-├── gnome-shell-sass/
-│   ├── _colors.scss
-│   ├── _widgets.scss
-│   └── widgets/
-├── theme/
-├── make_gresource.sh
-├── install.sh
-└── gnome-shell-theme.gresource.xml
+<h3>Step 6: Disable Wi-Fi MAC Filter</h3>
+<pre><code>
+1. Open browser: http://192.168.100.1
+2. Login: 
+   Username: telecomadmin
+   Password: admintelecom
+3. Navigate: Security → WLAN MAC Filter
+4. Uncheck Enable WLAN MAC Filter and click Apply
 </code></pre>
 
 <hr/>
 
-<h2>Development Notes</h2>
+<h2>Expected Results</h2>
 
 <ul>
-  <li>Edit <code>.scss</code> files in <code>gnome-shell-sass/</code> to adjust visuals.</li>
-  <li>Rebuild using:
-    <pre><code>./make_gresource.sh</code></pre>
-  </li>
-  <li>Test changes in a live GNOME Shell session before deploying to GDM.</li>
+  <li>Router interface displayed in English</li>
+  <li>Wi-Fi accessible to all devices</li>
+  <li>MAC restrictions removed</li>
+  <li>Router fully functional</li>
 </ul>
 
 <hr/>
 
-<h2>Screenshots</h2>
+<h2>Safety Notes</h2>
 
-<p align="center">
-  <img src="screenshots/dark-preview.png" width="48%" alt="Dark Theme Preview">
-  <img src="screenshots/light-preview.png" width="48%" alt="Light Theme Preview">
-</p>
-
-<hr/>
-
-<h2>Compatibility</h2>
-
-<table>
-  <tr>
-    <th>Distro</th>
-    <th>Status</th>
-    <th>GNOME Version</th>
-  </tr>
-  <tr>
-    <td>Fedora 40+</td>
-    <td>Tested</td>
-    <td>45–47</td>
-  </tr>
-  <tr>
-    <td>RHEL 9</td>
-    <td>Compatible</td>
-    <td>45</td>
-  </tr>
-  <tr>
-    <td>openSUSE Tumbleweed</td>
-    <td>Tested</td>
-    <td>46</td>
-  </tr>
-</table>
+<ul>
+  <li>Follow steps exactly</li>
+  <li>Always back up configuration files</li>
+  <li>Guide intended for educational/personal use only</li>
+  <li>Users are responsible for any device modifications</li>
+</ul>
 
 <hr/>
 
 <h2>License</h2>
-<p>This project is released under the <strong>MIT License</strong>. You are free to use, modify, and distribute it with proper attribution.</p>
-
-<hr/>
-
-<h2>Contributions</h2>
-<p>
-Contributions, bug reports, and pull requests are welcome.<br/>
-To improve the design, fix bugs, or add variants, please open an issue or PR on GitHub.
-</p>
+<p>This guide is intended for personal and educational use only.</p>
 
 <hr/>
 
 <h2>Author</h2>
-<p>
-Developed by <strong>Arsalan Jamal</strong> — passionate about Linux, UI design, and crafting clean, open-source experiences.
-</p>
+<p>Developed by <strong>Arsalan Jamal</strong> — focusing on practical, user-friendly networking and Linux solutions.</p>
